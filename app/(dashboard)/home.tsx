@@ -72,7 +72,7 @@ const HomeScreen = () => {
     (car) => car.category === activeCategory
   );
   const handlePress = ()=>{
-    // if user is logged in, go to profile, else go to login
+    
     
   }
   return (
