@@ -2,14 +2,14 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    FlatList,
-    Image,
-    SafeAreaView,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  FlatList,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
 
 // Car data
@@ -73,7 +73,7 @@ const HomeScreen = () => {
   );
   const handlePress = ()=>{
     
-    
+    router.push("/(auth)/login");
   }
   return (
     <SafeAreaView className="flex-1 bg-gray-100 px-4 pt-5">
@@ -125,7 +125,7 @@ const HomeScreen = () => {
               }}
             >
               <MaterialIcons
-                name={cat.icon}
+                name={cat.icon as any}
                 size={28}
                 color={activeCategory === cat.name ? "#111" : "#888"}
               />

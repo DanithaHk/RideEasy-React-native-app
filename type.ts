@@ -1,4 +1,3 @@
-import { User } from "firebase/auth";
 import { Icon } from "phosphor-react-native";
 import { ViewStyle } from "react-native";
 export type ScreenWrapperProps = {
@@ -18,7 +17,9 @@ export type UserDataType = {
 export type UserType = {
     name: string | null;
     email: string | null;
-    image?: any;
+    licenceNumber?: string | null;
+    expiryDate?: string|  null;
+    licenceImage?: any;
     uid: string;
 }
 export type ResponseType = {
