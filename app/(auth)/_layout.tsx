@@ -1,32 +1,30 @@
+// FILE: app/(auth)/_layout.tsx
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 
-export default function AuthLayout() {
+const AuthLayout = () => {
+  useEffect(() => {
+    console.log("AuthLayout mounted");
+  }, []);
+
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        // Use presentation instead of animation for better cross-platform support
-        presentation: "modal", // or "card" for default behavior
-        // Alternative: use animationTypeForReplace for more control
-        // animationTypeForReplace: "push",
-      }}
-    >
+    <Stack>
       <Stack.Screen 
         name="login" 
         options={{ 
-          title: "Login",
-          // You can also set animation per screen if needed
-          // presentation: "card"
+          headerShown: false,
+          title: "Login" 
         }} 
       />
       <Stack.Screen 
         name="register" 
         options={{ 
-          title: "Register", // Fixed: was "Login", should be "Register"
-          // presentation: "card"
+          headerShown: false,
+          title: "Register" 
         }} 
       />
     </Stack>
   );
-}
+};
+
+export default AuthLayout;

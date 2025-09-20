@@ -79,12 +79,14 @@ const RootContent = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       // After 2 seconds, navigate to login page
-      router.replace("/(auth)/login");
+      console.log("in root layoutNavigating to Login Screen");
+      
+      router.push("/login");
       setLoading(false);
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, []);
+  },  []);
 
   return   <Slot />;
 };

@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-
 // Car data
 const availableCars = [
   {
@@ -68,12 +67,15 @@ const HomeScreen = () => {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("Petrol");
 
+ 
+  
+
   const filteredCars = availableCars.filter(
     (car) => car.category === activeCategory
   );
   const handlePress = ()=>{
     
-    router.push("/(auth)/login");
+    router.push("/login");
   }
   return (
     <SafeAreaView className="flex-1 bg-gray-100 px-4 pt-5">

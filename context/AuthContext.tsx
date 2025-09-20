@@ -1,8 +1,8 @@
 import { auth, db } from "@/firebase";
 import { AuthContextType, UserType } from "@/type";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -11,31 +11,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(false);
 
   // Listen to Firebase Auth changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        // fetch extra user data from Firestore
-        const docRef = doc(db, "users", currentUser.uid);
-        const docSnap = await getDoc(docRef);
-        const data = docSnap.exists() ? docSnap.data() : {};
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+  //     if (currentUser) {
+  //       // fetch extra user data from Firestore
+  //       const docRef = doc(db, "users", currentUser.uid);
+  //       const docSnap = await getDoc(docRef);
+  //       const data = docSnap.exists() ? docSnap.data() : {};
 
-        const userData: UserType = {
-          uid: currentUser.uid,
-          email: currentUser.email,
-          name: currentUser.displayName ?? data?.name ?? null,
-          licenceNumber: data?.licenceNumber ?? null,
-          expiryDate: data?.expiryDate ?? null,
-          licenceImage: data?.licenceImage ?? null,
-        };
+  //       const userData: UserType = {
+  //         uid: currentUser.uid,
+  //         email: currentUser.email,
+  //         name: currentUser.displayName ?? data?.name ?? null,
+  //         licenceNumber: data?.licenceNumber ?? null,
+  //         expiryDate: data?.expiryDate ?? null,
+  //         licenceImage: data?.licenceImage ?? null,
+  //       };
 
-        setUser(userData);
-      } else {
-        setUser(null);
-      }
-    });
+  //       setUser(userData);
+  //     } else {
+  //       setUser(null);
+  //     }
+  //   });
 
-    return () => unsubscribe();
-  }, []);
+  //   return () => unsubscribe();
+  // }, []);
 
   // Login function
   const login = async (email: string, password: string) => {

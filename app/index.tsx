@@ -6,7 +6,9 @@ const Index = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace("/(auth)/login");
+      console.log("in inex Redirecting to Login Screen");
+      
+      router.push("/login");
     }, 500);
 
     // Clear timeout on unmount

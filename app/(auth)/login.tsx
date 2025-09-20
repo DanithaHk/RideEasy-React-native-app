@@ -122,6 +122,8 @@ const Login: React.FC = () => {
     logoScale.value = withSpring(1, { damping: 10, stiffness: 100 });
     formTranslateY.value = withTiming(0, { duration: 800 });
     formOpacity.value = withTiming(1, { duration: 800 });
+    console.log("Login Screen ");
+    
   }, []);
 
   const handleSubmit = async () => {
