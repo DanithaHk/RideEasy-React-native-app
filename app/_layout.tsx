@@ -49,7 +49,7 @@
 //   );
 // }
 
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { LoaderContext, LoaderProvider } from "@/context/LoaderContext";
 import { Slot, router } from "expo-router";
 import { useContext, useEffect } from "react";
@@ -75,12 +75,12 @@ const SplashScreen = () => (
 // Root Content to handle splash + routing
 const RootContent = () => {
   const { isLoading, setLoading } = useContext(LoaderContext);
-
+  const user = useAuth();
   useEffect(() => {
     const timer = setTimeout(() => {
       // After 2 seconds, navigate to login page
       console.log("in root layoutNavigating to Login Screen");
-      
+      console.log(user);
       router.push("/login");
       setLoading(false);
     }, 2000);

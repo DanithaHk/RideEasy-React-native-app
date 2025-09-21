@@ -1,8 +1,8 @@
 import { auth, db } from "@/firebase";
 import { AuthContextType, UserType } from "@/type";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -10,32 +10,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Listen to Firebase Auth changes
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-  //     if (currentUser) {
-  //       // fetch extra user data from Firestore
-  //       const docRef = doc(db, "users", currentUser.uid);
-  //       const docSnap = await getDoc(docRef);
-  //       const data = docSnap.exists() ? docSnap.data() : {};
+ // Listen to Firebase Auth changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        // fetch extra user data from Firestore
+        const docRef = doc(db, "users", currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        const data = docSnap.exists() ? docSnap.data() : {};
 
-  //       const userData: UserType = {
-  //         uid: currentUser.uid,
-  //         email: currentUser.email,
-  //         name: currentUser.displayName ?? data?.name ?? null,
-  //         licenceNumber: data?.licenceNumber ?? null,
-  //         expiryDate: data?.expiryDate ?? null,
-  //         licenceImage: data?.licenceImage ?? null,
-  //       };
+        const userData: UserType = {
+          uid: currentUser.uid,
+          email: currentUser.email,
+          name: currentUser.displayName ?? data?.name ?? null,
+          licenceNumber: data?.licenceNumber ?? null,
+          expiryDate: data?.expiryDate ?? null,
+          licenceImage: data?.licenceImage ?? null,
+          profileImage: data?.profileImage ?? null,
+        };
 
-  //       setUser(userData);
-  //     } else {
-  //       setUser(null);
-  //     }
-  //   });
+        setUser(userData);
+      } else {
+        setUser(null);
+      }
+    });
 
-  //   return () => unsubscribe();
-  // }, []);
+    return () => unsubscribe();
+  }, []);
 
   // Login function
   const login = async (email: string, password: string) => {
@@ -56,6 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         licenceNumber: data?.licenceNumber ?? null,
         expiryDate: data?.expiryDate ?? null,
         licenceImage: data?.licenceImage ?? null,
+        profileImage: data?.profileImage ?? null,
       };
 
       setUser(userData);
@@ -92,6 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         licenceNumber: null,
         expiryDate: null,
         licenceImage: null,
+        profileImage: null,
       });
 
       return { success: true };
@@ -103,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Update user data (fetch from Firestore)
+
   const updateUserData = async (uid: string) => {
     try {
       setLoading(true);
@@ -120,6 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           licenceNumber: data?.licenceNumber ?? null,
           expiryDate: data?.expiryDate ?? null,
           licenceImage: data?.licenceImage ?? null,
+          profileImage: data?.profileImage ?? null,
         };
         setUser(userData);
       }
@@ -136,6 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     login,
     register,
     updateUserData,
+    loading,
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

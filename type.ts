@@ -21,6 +21,13 @@ export type UserType = {
     expiryDate?: string|  null;
     licenceImage?: any;
     uid: string;
+    profileImage:any;
+}
+export type ProfileDataType = {
+  name: string| null;
+  
+  licenceNumber: string | null;
+  expiryDate: string | null;
 }
 export type ResponseType = {
   success: boolean;
@@ -46,6 +53,7 @@ export type AuthContextType = {
     msg?: string;
   }>;
   updateUserData:(userId:string)=>Promise<void>;
+  loading: boolean;
 };
 
 export type WalletType = {

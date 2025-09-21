@@ -137,7 +137,7 @@ const Login: React.FC = () => {
     try {
       const res = await login(email, password); // <- call context login
       if (res.success) {
-        router.replace("/(dashboard)/home"); // navigate after successful login
+        router.replace("/home"); // navigate after successful login
       } else {
         Alert.alert("Login Failed", res.msg || "Something went wrong");
       }
