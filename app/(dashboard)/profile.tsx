@@ -250,108 +250,110 @@ const ProfileScreen = () => {
       </ScrollView>
 
       {/* Edit Profile Modal */}
-      <Modal
-        animationType="none"
-        transparent
-        visible={modalVisible}
-        onRequestClose={closeModal}
-        statusBarTranslucent
-      >
-        <Animated.View
-          style={{ flex: 1, opacity: fadeAnim }}
-          className="justify-center items-center"
+      {/* Edit Profile Modal */}
+        <Modal
+          animationType="none"
+          transparent
+          visible={modalVisible}
+          onRequestClose={closeModal}
+          statusBarTranslucent
         >
-          {/* Backdrop */}
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={closeModal}
-            className="absolute inset-0 bg-black/60"
-          />
-
-          {/* Modal Content */}
           <Animated.View
-            style={{
-              transform: [
-                { translateY: slideAnim },
-                { scale: scaleAnim },
-                { translateY: keyboardOffset },
-              ],
-            }}
-            className="bg-white w-11/12 max-w-md rounded-2xl mx-4 overflow-hidden"
+            style={{ flex: 1, opacity: fadeAnim }}
+            className="justify-center items-center"
           >
-            {/* Header */}
-            <View className="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4 flex-row items-center justify-between">
-              <Text className="text-white text-xl font-bold">Edit Profile</Text>
-              <TouchableOpacity
-                onPress={closeModal}
-                className="w-8 h-8 bg-white rounded-full items-center justify-center"
-                activeOpacity={0.7}
-              >
-                <Ionicons name="close" size={18} color="white" />
-              </TouchableOpacity>
-            </View>
+            {/* Backdrop */}
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={closeModal}
+              className="absolute inset-0 bg-white" // softened overlay
+            />
 
-            {/* Content */}
-            <View className="p-6">
-              {/* Name */}
-              <TextInput
-                value={editName}
-                onChangeText={setEditName}
-                placeholder="Full Name"
-                className="border border-gray-200 rounded-xl px-4 py-3 mb-4"
-              />
-
-              {/* License Number */}
-              <TextInput
-                value={editLicenceNumber}
-                onChangeText={setEditLicenceNumber}
-                placeholder="Licence Number"
-                className="border border-gray-200 rounded-xl px-4 py-3 mb-4"
-              />
-
-              {/* Expiry Date */}
-              <TextInput
-                value={editExpiryDate}
-                onChangeText={setEditExpiryDate}
-                placeholder="MM/DD/YYYY"
-                className="border border-gray-200 rounded-xl px-4 py-3 mb-4"
-              />
-
-              {/* Current Password */}
-              <TextInput
-                value={currentPassword}
-                onChangeText={setCurrentPassword}
-                placeholder="Current Password"
-                secureTextEntry
-                className="border border-gray-200 rounded-xl px-4 py-3 mb-6"
-              />
-
-              {/* Action Buttons */}
-              <View className="flex-row gap-3">
+            {/* Modal Content */}
+            <Animated.View
+              style={{
+                transform: [
+                  { translateY: slideAnim },
+                  { scale: scaleAnim },
+                  { translateY: keyboardOffset },
+                ],
+              }}
+              className="bg-white w-11/12 max-w-md rounded-2xl mx-4 overflow-hidden"
+            >
+              {/* Header */}
+              <View className="bg-white px-6 py-4 flex-row items-center justify-between border-b border-gray-00">
+                <Text className="text-gray-900 text-xl font-bold">Edit Profile</Text>
                 <TouchableOpacity
                   onPress={closeModal}
-                  className="flex-1 bg-gray-100 py-4 rounded-xl border border-gray-200"
-                  disabled={loading}
+                  className="w-8 h-8 bg-gray-200 rounded-full items-center justify-center"
+                  activeOpacity={1}
                 >
-                  <Text className="text-gray-700 font-semibold text-center">
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={saveProfile}
-                  className={`flex-1 py-4 rounded-xl ${loading ? "bg-red-400" : "bg-red-500"}`}
-                  disabled={loading}
-                >
-                  <Text className="text-white font-semibold text-center">
-                    {loading ? "Saving..." : "Save Changes"}
-                  </Text>
+                  <Ionicons name="close" size={18} color="black" />
                 </TouchableOpacity>
               </View>
-            </View>
+
+              {/* Content */}
+              <View className="p-6">
+                {/* Name */}
+                <TextInput
+                  value={editName}
+                  onChangeText={setEditName}
+                  placeholder="Full Name"
+                  className="border border-gray-200 rounded-xl px-4 py-3 mb-4"
+                />
+
+                {/* License Number */}
+                <TextInput
+                  value={editLicenceNumber}
+                  onChangeText={setEditLicenceNumber}
+                  placeholder="Licence Number"
+                  className="border border-gray-200 rounded-xl px-4 py-3 mb-4"
+                />
+
+                {/* Expiry Date */}
+                <TextInput
+                  value={editExpiryDate}
+                  onChangeText={setEditExpiryDate}
+                  placeholder="MM/DD/YYYY"
+                  className="border border-gray-200 rounded-xl px-4 py-3 mb-4"
+                />
+
+                {/* Current Password */}
+                <TextInput
+                  value={currentPassword}
+                  onChangeText={setCurrentPassword}
+                  placeholder="Current Password"
+                  secureTextEntry
+                  className="border  border-gray-200 rounded-xl px-4 py-3 mb-6"
+                />
+
+                {/* Action Buttons */}
+                <View className="flex-row gap-3">
+                  <TouchableOpacity
+                    onPress={closeModal}
+                    className="flex-1 bg-gray-100 py-4 rounded-xl border border-gray-200"
+                    disabled={loading}
+                  >
+                    <Text className="text-gray-700 font-semibold text-center">
+                      Cancel
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={saveProfile}
+                    className={`flex-1 py-4 rounded-xl ${loading ? "bg-red-400" : "bg-red-500"}`}
+                    disabled={loading}
+                  >
+                    <Text className="text-white font-semibold text-center">
+                      {loading ? "Saving..." : "Save Changes"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Animated.View>
           </Animated.View>
-        </Animated.View>
-      </Modal>
+        </Modal>
+
     </SafeAreaView>
   );
 };
