@@ -23,6 +23,16 @@ export type UserType = {
     uid: string;
     profileImage:any;
 }
+export type BookingType =  {
+    carName: string;
+    carCategory: string;
+    rentalStartDate: Date;
+    rentalEndDate: Date;
+    rentalDays: number;
+    dailyRate: number;
+    total: number;
+    userName: string | null;
+}
 export type ProfileDataType = {
   name: string| null;
   

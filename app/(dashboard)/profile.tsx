@@ -266,7 +266,7 @@ const ProfileScreen = () => {
             <TouchableOpacity
               activeOpacity={1}
               onPress={closeModal}
-              className="absolute inset-0 bg-white" // softened overlay
+              className="absolute inset-0 bg-white" 
             />
 
             {/* Modal Content */}
