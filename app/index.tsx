@@ -1,23 +1,26 @@
-import { useRouter } from "expo-router";
-import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext"
+import { useRouter } from "expo-router"
+import React, { useEffect } from "react"
+import { ActivityIndicator, View } from "react-native"
 
 const Index = () => {
-  const router = useRouter();
+  const router = useRouter()
+  const { user, loading } = useAuth()
+  console.log("User Data : ", user)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log("in inex Redirecting to Login Screen");
-      
-      router.push("/login");
-    }, 500);
+     if (user) {
+      router.replace("/home"); 
+      router.replace("/login");
+    }
+    
+  }, [user, loading])
 
-    // Clear timeout on unmount
-    return () => clearTimeout(timer);
-  }, [router]);
+  return loading ? (
+    <View className="flex-1 w-full justify-center align-items-center">
+      <ActivityIndicator size="large" />
+    </View>
+  ) : null
+}
 
-  
-};
-
-export default Index;
-
-
+export default Index
