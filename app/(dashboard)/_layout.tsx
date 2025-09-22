@@ -26,6 +26,15 @@ export default function DashboardLayout() {
           }}
         />
         <Tabs.Screen
+          name="booking"
+          options={{
+            title: "Booking",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="calendar-today" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="profile"
           options={{
             title: "Profile",
