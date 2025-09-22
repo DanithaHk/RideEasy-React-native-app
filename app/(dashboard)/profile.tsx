@@ -38,7 +38,7 @@ const ProfileScreen = () => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [loading, setLoading] = useState(false);
   
-  // Animation refs
+  
   const slideAnim = useRef(new Animated.Value(height)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;

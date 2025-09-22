@@ -11,6 +11,8 @@ const Index = () => {
   useEffect(() => {
      if (user) {
       router.replace("/home"); 
+      
+    }else{
       router.replace("/login");
     }
     

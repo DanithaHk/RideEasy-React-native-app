@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { saveBooking } from "@/services/bookingService";
+import { BookingType } from "@/type";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from "expo-router";
@@ -102,16 +103,17 @@ const rentalDays = Math.max(
       setLoading(false);
       return;
     }
-    const booking = {
-      carName: selectedCar.name,
-      carCategory: selectedCar.category,
-      rentalStartDate: startDate,
-      rentalEndDate: endDate,
-      rentalDays: rentalDays,
-      dailyRate: selectedCar.price,
-      total: selectedCar.price * rentalDays,
-      userName: user.name,
-    }
+   const booking: BookingType = {
+  carName: selectedCar.name,
+  carCategory: selectedCar.category,
+  rentalStartDate: startDate,
+  rentalEndDate: endDate,
+  rentalDays: rentalDays,
+  dailyRate: selectedCar.price,
+  total: selectedCar.price * rentalDays,
+  userName: user.name ?? undefined, // convert null to undefined
+};
+
     try{
       const response =  saveBooking(booking);
       alert("Booking successful");

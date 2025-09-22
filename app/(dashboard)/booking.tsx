@@ -1,6 +1,10 @@
+import { useAuth } from "@/context/AuthContext";
+import { getBookings } from "@/services/bookingService";
+import { BookingType } from "@/type";
 import { MaterialIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React from "react";
+import { useRouter } from "expo-router";
+import { Timestamp } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import {
     Dimensions,
     ImageBackground,
@@ -13,43 +17,54 @@ import {
 
 const { width } = Dimensions.get("window");
 
-const bookingsData = [
-  {
-    type: "Compact",
-    id: "#12345",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDbkHhfrUCZdSidGTXCfUNCo6vJPYtlJk6ychvu3E8PiDCHyiYykZd-R8qjF6SFlveK5xu-r0YrvHLjv1LDz4LdCZtmvOAxotey92ZFNrTBEQXPSpS-WYO4pU-cQCfSpdK6mOT9FORO0qF5cb99TZsfE3deB_KjgO-AUPptcWiFnHFT9f3mQINbWsSRN5nZ8UWVBCg-MuO8hy6x-ocA8D2Ynk5BXG0YCps7AdmHmVOWxGK5CVs7UcVPVypXjWyaF3UgdzqRYdurCRZ_",
-    start: "June 1, 2024",
-    end: "June 5, 2024",
-    price: "$50/day",
-  },
-];
+const BookingScreen: React.FC = () => {
+  const { user } = useAuth();
+  const router = useRouter();
 
-const historyData = [
-  {
-    type: "Sedan",
-    id: "#67890",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuB8ZBwgA2JlAx-LrdCxEStxZS1YIb56gIytx13gHj504lW6k8rs7nawUXLYWQOwCW3HhsgK640L88xIyCWEeqq_zz6NnZVu9ySRrq01Ct8GJ8C6kFcjqXvzCKa_yLWgEAr6sAmjEKQ-zDzLxpbKCysRHhyjH3ybVyWboBAxTFTLdXenBc72Q_vmX_7jDgKTU7PRO2gDwAMKkT-W4XztG5z92WkcTqIr1-wR18A4e46JY6uGG7hFmmwHij2P3xRU1RNZgBgtwgixWOa8",
-    start: "May 15, 2024",
-    end: "May 20, 2024",
-    price: "$70/day",
-  },
-  {
-    type: "SUV",
-    id: "#11223",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAoedKtel78R3DVJxuOYI0uypUygaaKTchRrazx7i5hj8Wb5jRwB6DVPw4KN1yDyfeROK9mBEThbJgiSpnG6pxj0bV0AGmHJ0Kb6MuaooJIgb2yrL_kMPpkcFSZW-qLOOywQNmwsmqglVLm4LDviXKuFCuMxD4km4zH-Wfr27sCkLnyLP7CkOsIgPrVsWHWdJcA_mMylQEpSnT22UZQmOgzPj54JcU8wtwudsDyv4DSpF6pSU9J8c5wmCA-2mGsZd0k9DG35k3etvn0",
-    start: "July 10, 2024",
-    end: "July 12, 2024",
-    price: "$90/day",
-  },
-];
-const onCarButtonPress = () => {
-  router.push("/home");
-  console.log("Car button pressed");
-}
-const BookingScreen = () => {
+  const [bookings, setBookings] = useState<BookingType[]>([]);
+
+  useEffect(() => {
+    loadBookings();
+  }, []);
+
+  const loadBookings = async (): Promise<void> => {
+    if (!user?.name) return;
+
+    try {
+      const userBookings: BookingType[] = await getBookings(user.name);
+      console.log(userBookings);
+      
+      setBookings(userBookings);
+    } catch (error) {
+      console.error("Error loading bookings:", error);
+    }
+  };
+
+  const onCarButtonPress = (): void => {
+    router.push("/home");
+    console.log("Car button pressed");
+  };
+
+  // Convert Firestore Timestamp to JS Date safely
+  const toDate = (value: Timestamp | Date | undefined): Date | undefined => {
+    if (!value) return undefined;
+    return value instanceof Timestamp ? value.toDate() : value;
+  };
+
+  // Separate active bookings and history
+  const activeBookings = bookings.filter(
+    (b) => toDate(b.rentalEndDate)! > new Date()
+  );
+  const historyBookings = bookings.filter(
+    (b) => toDate(b.rentalEndDate)! <= new Date()
+  );
+
+  const formatDate = (value: Timestamp | Date | undefined): string =>
+    toDate(value)?.toDateString() || "";
+
+  const defaultImage =
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuAoedKtel78R3DVJxuOYI0uypUygaaKTchRrazx7i5hj8Wb5jRwB6DVPw4KN1yDyfeROK9mBEThbJgiSpnG6pxj0bV0AGmHJ0Kb6MuaooJIgb2yrL_kMPpkcFSZW-qLOOywQNmwsmqglVLm4LDviXKuFCuMxD4km4zH-Wfr27sCkLnyLP7CkOsIgPrVsWHWdJcA_mMylQEpSnT22UZQmOgzPj54JcU8wtwudsDyv4DSpF6pSU9J8c5wmCA-2mGsZd0k9DG35k0";
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
@@ -62,9 +77,9 @@ const BookingScreen = () => {
         <View style={styles.buttonRow}>
           <TouchableOpacity style={styles.button} onPress={onCarButtonPress}>
             <MaterialIcons name="directions-car" size={20} color="#111" />
-            <Text style={styles.buttonText} >Cars</Text>
+            <Text style={styles.buttonText}>Cars</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity style={[styles.button, styles.historyButton]}>
             <MaterialIcons name="history" size={20} color="#fff" />
             <Text style={[styles.buttonText, { color: "#fff" }]}>History</Text>
@@ -73,70 +88,77 @@ const BookingScreen = () => {
 
         {/* Active Bookings */}
         <Text style={styles.sectionTitle}>Active Bookings</Text>
-        {bookingsData.map((item, index) => (
-          <View key={index} style={styles.bookingCard}>
-            <View style={styles.bookingTopRow}>
-              <ImageBackground
-                source={{ uri: item.image }}
-                style={styles.bookingImage}
-                imageStyle={{ borderRadius: 12 }}
-              />
-              <View style={{ flex: 1 }}>
-                <Text style={styles.bookingType}>{item.type}</Text>
-                <Text style={styles.bookingId}>Booking ID: {item.id}</Text>
+        {activeBookings.length === 0 ? (
+          <Text style={{ textAlign: "center", color: "#6b7280", marginTop: 8 }}>
+            No active bookings
+          </Text>
+        ) : (
+          activeBookings.map((item: BookingType) => (
+            <View key={item.id} style={styles.bookingCard}>
+              <View style={styles.bookingTopRow}>
+                <ImageBackground
+                  source={{ uri:  defaultImage }}
+                  style={styles.bookingImage}
+                  imageStyle={{ borderRadius: 12 }}
+                />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.bookingType}>{item.carName}</Text>
+                  <Text style={styles.bookingId}>Booking ID: {item.id}</Text>
+                </View>
+                <View style={styles.starCircle}>
+                  <MaterialIcons name="star" size={16} color="#fff" />
+                </View>
               </View>
-              <View style={styles.starCircle}>
-                <MaterialIcons name="star" size={16} color="#fff" />
+              <View style={styles.bookingBottomRow}>
+                <View>
+                  <Text style={styles.dateLabel}>Start Date</Text>
+                  <Text style={styles.dateValue}>{formatDate(item.rentalStartDate)}</Text>
+                </View>
+                <View>
+                  <Text style={styles.dateLabel}>End Date</Text>
+                  <Text style={styles.dateValue}>{formatDate(item.rentalEndDate)}</Text>
+                </View>
+                <Text style={styles.price}>{item.total}</Text>
               </View>
             </View>
-            <View style={styles.bookingBottomRow}>
-              <View>
-                <Text style={styles.dateLabel}>Start Date</Text>
-                <Text style={styles.dateValue}>{item.start}</Text>
-              </View>
-              <View>
-                <Text style={styles.dateLabel}>End Date</Text>
-                <Text style={styles.dateValue}>{item.end}</Text>
-              </View>
-              <Text style={styles.price}>{item.price}</Text>
-            </View>
-          </View>
-        ))}
+          ))
+        )}
 
         {/* Booking History */}
         <Text style={styles.sectionTitle}>Booking History</Text>
-        {historyData.map((item, index) => (
-          <View key={index} style={[styles.bookingCard, { backgroundColor: "#f4f4f5" }]}>
-            <View style={styles.bookingTopRow}>
-              <ImageBackground
-                source={{ uri: item.image }}
-                style={styles.bookingImage}
-                imageStyle={{ borderRadius: 12 }}
-              />
-              <View style={{ flex: 1 }}>
-                <Text style={styles.bookingType}>{item.type}</Text>
-                <Text style={styles.bookingId}>Booking ID: {item.id}</Text>
+        {historyBookings.length === 0 ? (
+          <Text style={{ textAlign: "center", color: "#6b7280", marginTop: 8 }}>
+            No past bookings
+          </Text>
+        ) : (
+          historyBookings.map((item: BookingType) => (
+            <View key={item.id} style={[styles.bookingCard, { backgroundColor: "#f4f4f5" }]}>
+              <View style={styles.bookingTopRow}>
+                <ImageBackground
+                  source={{ uri:  defaultImage }}
+                  style={styles.bookingImage}
+                  imageStyle={{ borderRadius: 12 }}
+                />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.bookingType}>{item.carName}</Text>
+                  <Text style={styles.bookingId}>Booking ID: {item.id}</Text>
+                </View>
+              </View>
+              <View style={styles.bookingBottomRow}>
+                <View>
+                  <Text style={styles.dateLabel}>Start Date</Text>
+                  <Text style={styles.dateValue}>{formatDate(item.rentalStartDate)}</Text>
+                </View>
+                <View>
+                  <Text style={styles.dateLabel}>End Date</Text>
+                  <Text style={styles.dateValue}>{formatDate(item.rentalEndDate)}</Text>
+                </View>
+                <Text style={styles.price}>{item.total}</Text>
               </View>
             </View>
-            <View style={styles.bookingBottomRow}>
-              <View>
-                <Text style={styles.dateLabel}>Start Date</Text>
-                <Text style={styles.dateValue}>{item.start}</Text>
-              </View>
-              <View>
-                <Text style={styles.dateLabel}>End Date</Text>
-                <Text style={styles.dateValue}>{item.end}</Text>
-              </View>
-              <Text style={styles.price}>{item.price}</Text>
-            </View>
-          </View>
-        ))}
-
-        
+          ))
+        )}
       </ScrollView>
-
-      
-      
     </View>
   );
 };
@@ -160,10 +182,7 @@ const styles = StyleSheet.create({
     borderColor: "#e5e7eb",
     backgroundColor: "#fff",
   },
-  historyButton: {
-    backgroundColor: "#ea2a33",
-    borderWidth: 0,
-  },
+  historyButton: { backgroundColor: "#ea2a33", borderWidth: 0 },
   buttonText: { fontSize: 14, fontWeight: "500", color: "#111" },
   sectionTitle: { fontSize: 18, fontWeight: "bold", color: "#111", paddingHorizontal: 16, marginTop: 16 },
   bookingCard: {
@@ -184,17 +203,4 @@ const styles = StyleSheet.create({
   dateLabel: { fontSize: 10, color: "#6b7280" },
   dateValue: { fontSize: 14, fontWeight: "600", color: "#111" },
   price: { fontSize: 14, fontWeight: "bold", color: "#111" },
-  bookNowButton: { backgroundColor: "#ea2a33", borderRadius: 50, paddingVertical: 16, alignItems: "center" },
-  bookNowText: { color: "#fff", fontSize: 18, fontWeight: "bold" },
-  bottomNav: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderTopWidth: 1,
-    borderTopColor: "#e5e7eb",
-    backgroundColor: "#fff",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  navItem: { flex: 1, alignItems: "center" },
-  navText: { fontSize: 10, fontWeight: "500", color: "#6b7280", marginTop: 2 },
 });

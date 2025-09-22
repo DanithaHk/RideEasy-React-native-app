@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { Icon } from "phosphor-react-native";
 import { ViewStyle } from "react-native";
 export type ScreenWrapperProps = {
@@ -23,15 +24,17 @@ export type UserType = {
     uid: string;
     profileImage:any;
 }
-export type BookingType =  {
-    carName: string;
-    carCategory: string;
-    rentalStartDate: Date;
-    rentalEndDate: Date;
-    rentalDays: number;
-    dailyRate: number;
-    total: number;
-    userName: string | null;
+export interface BookingType {
+  id?: string; // Add id field
+  carName: string;
+  carCategory?: string;
+  rentalStartDate: Date | Timestamp;
+  rentalEndDate: Date | Timestamp;
+  rentalDays?: number;
+  dailyRate?: number;
+  total: number;
+  createdAt?: Date | Timestamp;
+  userName?: string;
 }
 export type ProfileDataType = {
   name: string| null;
