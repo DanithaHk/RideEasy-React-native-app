@@ -21,7 +21,7 @@ The app features **smooth animations**, **Material Icons**, and **Firebase integ
 ##  Demo
 
 Watch the full demo on **YouTube**:  
-[![RideEase Yt Video]([https://img.youtube.com/vi/ZhiF-HsnPAY/0.jpg)](https://youtu.be/ZhiF-HsnPAY?si=goz-NCc-cwPN_smw](https://youtube.com/shorts/RDYItU8vrj0?si=FJHEMS9KThaondSb))
+[![RideEase Demo](https://img.youtube.com/vi/RDYItU8vrj0/0.jpg)](https://youtube.com/shorts/RDYItU8vrj0?si=Nxluht0f8JbVtja5)
 
 ---
 
