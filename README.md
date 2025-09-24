@@ -20,11 +20,8 @@ The app features **smooth animations**, **Material Icons**, and **Firebase integ
 
 ## 🎥 Demo
 
-| Home Screen | Driving Licence Upload | Booking Screen |
-|-------------|------------------------|----------------|
-| ![Home](./assets/demo/home.gif) | ![Upload](./assets/demo/licence.gif) | ![Booking](./assets/demo/booking.gif) |
-
-> *GIF demos coming soon!*
+Watch the full demo on **YouTube**:  
+[![RideEase Demo](https://img.youtube.com/vi/ZhiF-HsnPAY/0.jpg)](https://youtu.be/ZhiF-HsnPAY?si=goz-NCc-cwPN_smw)
 
 ---
 
@@ -47,3 +44,30 @@ Follow these steps to set up RideEase locally:
 ```bash
 git clone https://github.com/your-username/rideease.git
 cd rideease
+# Install core dependencies
+npx create-expo-app@latest
+npm install
+
+# React Navigation
+npm install @react-navigation/native
+npx expo install react-native-screens react-native-safe-area-context
+npm install @react-navigation/native-stack
+
+# Firebase
+npm install firebase
+
+# Expo Image Picker (for driving license upload)
+npx expo install expo-image-picker
+
+# Material Icons
+npx expo install @expo/vector-icons
+
+# Cloudinary upload (using fetch + FormData, no library needed)
+# If you prefer Axios for API calls
+npm install axios
+
+# Gesture Handler & Animations
+npx expo install react-native-gesture-handler react-native-reanimated
+
+# Dotenv for environment variables
+npm install react-native-dotenv
