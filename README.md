@@ -6,7 +6,7 @@ The app features **smooth animations**, **Material Icons**, and **Firebase integ
 
 ---
 
-## 🌟 Features
+## Features
 
 - 📱 **Beautiful UI** with smooth animations  
 - 🔑 **User Authentication** (Firebase Auth)  
@@ -18,14 +18,14 @@ The app features **smooth animations**, **Material Icons**, and **Firebase integ
 
 ---
 
-## 🎥 Demo
+##  Demo
 
 Watch the full demo on **YouTube**:  
-[![RideEase Demo](https://img.youtube.com/vi/ZhiF-HsnPAY/0.jpg)](https://youtu.be/ZhiF-HsnPAY?si=goz-NCc-cwPN_smw)
+[![RideEase Yt Video]([https://img.youtube.com/vi/ZhiF-HsnPAY/0.jpg)](https://youtu.be/ZhiF-HsnPAY?si=goz-NCc-cwPN_smw](https://youtube.com/shorts/RDYItU8vrj0?si=FJHEMS9KThaondSb))
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **React Native** - Cross-platform mobile development  
 - **Expo** - Simplified app development and deployment  
@@ -36,11 +36,11 @@ Watch the full demo on **YouTube**:
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 Follow these steps to set up RideEase locally:
 
-### **1️⃣ Clone the repository**
+### ** Clone the repository**
 ```bash
 git clone https://github.com/your-username/rideease.git
 cd rideease
@@ -62,12 +62,9 @@ npx expo install expo-image-picker
 # Material Icons
 npx expo install @expo/vector-icons
 
-# Cloudinary upload (using fetch + FormData, no library needed)
-# If you prefer Axios for API calls
-npm install axios
 
-# Gesture Handler & Animations
-npx expo install react-native-gesture-handler react-native-reanimated
 
-# Dotenv for environment variables
-npm install react-native-dotenv
+
+
+
+
